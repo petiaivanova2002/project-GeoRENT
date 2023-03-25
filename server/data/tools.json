@@ -1,0 +1,50 @@
+{
+    "b90bc86e-2abf-4f11-9e64-9e751e5166a4": {
+        "brand": "Topcon",
+        "category": "gps",
+        "description": "Lovely work",
+        "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQ5adC8QbM_57ohsHwTmjOdXQ6iDQGpW_7mA&usqp=CAU",
+        "price": "300lv.",
+        "_id": "b90bc86e-2abf-4f11-9e64-9e751e5166a4"
+    },
+    "44a78b08-2cf3-4491-ac41-413d01deef25": {
+        "brand": "Leica",
+        "category": "lasers",
+        "description": "Practise every day",
+        "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzhsSXEHhWMVsq98ZF97R_XTO6ZRl0BMl7LQ&usqp=CAU",
+        "price": "500lv.",
+        "_id": "44a78b08-2cf3-4491-ac41-413d01deef25"
+    },
+    "0548dd19-977b-44ef-9b88-04c51895fb10": {
+        "brand": "Geovara",
+        "category": "drones",
+        "description": "Fly with as",
+        "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlPt8Ix8CuRuWBob6rZxAEjmHREyBsEZQnpw&usqp=CAU",
+        "price": "550",
+        "_id": "0548dd19-977b-44ef-9b88-04c51895fb10"
+    },
+    "e3f506e1-9c28-4a82-a0ff-5730a1637169": {
+        "brand": "Topcon",
+        "category": "levels",
+        "description": "leveling",
+        "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtmx34H8al3ed25pGAAjUBx2MeEM5vtaGzYw&usqp=CAU",
+        "price": "150",
+        "_id": "e3f506e1-9c28-4a82-a0ff-5730a1637169"
+    },
+    "9afe1e55-9288-4870-99da-891a52b3f656": {
+        "brand": "Topcon",
+        "category": "accessories",
+        "description": "tripod",
+        "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfTdsnXgd3kZ8E7ezMPH5d3er71044pNgGHg&usqp=CAU",
+        "price": "50",
+        "_id": "9afe1e55-9288-4870-99da-891a52b3f656"
+    },
+    "73e19a6b-91cc-4f2b-999d-ebf5b733febf": {
+        "brand": "some",
+        "category": "Accessories",
+        "description": "esdfghj",
+        "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSO3nzWZmjiPGm1XmR7oNB26BiiuWqWTUbGaA&usqp=CAU",
+        "price": "80",
+        "_id": "73e19a6b-91cc-4f2b-999d-ebf5b733febf"
+    }
+}
