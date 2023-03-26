@@ -9,7 +9,15 @@ export const register = (registerData) => {
     return request.post(`${baseUrl}/register`, registerData)
 };
 
-export const logout = () => request.get(`${baseUrl}/logout`)
+// export const logout = (token) => request.get( `${baseUrl}/logout`,token);
+export const logout = async (token) => {
+    const response = await fetch(`${baseUrl}/logout`,{
+        headers: {
+            'X-Authorization': token
+        }
+    });
+    return response;
+}
 
 // export const login = async (loginData) => {
 //     const response = await fetch(`${baseUrl}/login`, {

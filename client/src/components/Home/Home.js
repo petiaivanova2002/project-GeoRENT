@@ -1,4 +1,5 @@
 import styles from './Home.module.css'
+import { Link } from 'react-router-dom'
 
 export default function Home() {
     return (
@@ -6,7 +7,7 @@ export default function Home() {
                 
             <h1>Geodesy tools and accessories for RENT</h1>
             <p className={styles['italic']}>You measure the Earth!</p>
-            <a href="/catalog" className={styles["rent"]}>view All tools</a>
+            <Link to="/catalog" className={styles["rent"]}>view All tools</Link>
 
             <ul className={styles['add']}>
                 <li>Quickly!</li>

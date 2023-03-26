@@ -11,12 +11,12 @@ export const getAll = async () => {
 export const getOne = async (toolId) => {
     const response = await fetch(`${baseUrl}/${toolId}`);
     const result = await response.json();
-    console.log(result);
+    // console.log(result);
 
     return result;
 };
 
-export const create = async (toolData) => {
+export const create = async (toolData, token) => {
     const { ...data } = toolData;
     // console.log(data);
 
@@ -24,6 +24,7 @@ export const create = async (toolData) => {
         method: 'POST',
         headers: {
             'content-type': 'application/json',
+            'X-Authorization': token
         },
         body: JSON.stringify(data)
     });
@@ -43,12 +44,14 @@ export const remove = async (toolId) => {
     return result;
 }
 
-export const update = async (toolId, toolData) => {
-    const {...data} = toolData
+export const update = async ( toolData,toolId,token) => {
+    const {...data} = toolData;
+    console.log(data)
     const response = await fetch(`${baseUrl}/${toolId}`, {
         method: 'PUT',
         headers: {
-            'content-type': 'application/json'
+            'content-type': 'application/json',
+            'X-Authorization': token
         },
         body: JSON.stringify(data)
     });

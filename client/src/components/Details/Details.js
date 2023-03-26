@@ -1,8 +1,10 @@
 import styles from './Details.module.css'
 import { useParams } from 'react-router-dom'
 import { Link } from 'react-router-dom'
-import { useState, useEffect } from 'react';
-import * as toolsService from '../../services/toolsService'
+import { useState, useEffect, useContext } from 'react';
+import * as toolsService from '../../services/toolsService';
+import { ToolContext } from '../../contexts/ToolContext';
+
 export default function Details({
     _id,
     // brand,
@@ -11,24 +13,28 @@ export default function Details({
     // imageUrl,
     // price,
 }) {
-    const {toolId} = useParams();
-    const [tool, setTool] = useState({})
+    const { toolId } = useParams();
+    const [tool, setTool] = useState({});
+    const { isAuthenticated, email } = useContext(ToolContext)
 
     useEffect(() => {
         toolsService.getOne(toolId)
-        .then(result => {
-            setTool(result)
-        })
-    },[toolId])
+            .then(result => {
+                setTool(result)
+            })
+    }, [toolId])
     return (
         <section className={styles["details-page"]}>
             <h1>Details</h1>
 
             <article className={styles["details-text"]}>
+                <div>
+                Contacts: {email}
+                </div>
                 {/* <button onClick={() => console.log(brand)}>Test</button> */}
                 <h3> {tool.brand}</h3>
                 <h4> {tool.category}</h4>
-                <img src={tool.imageUrl} alt='tool'/>
+                <img src={tool.imageUrl} alt='tool' />
                 <p>Price per month: {tool.price}</p>
                 <p>Description: {tool.description}</p>
 
@@ -37,10 +43,12 @@ export default function Details({
                     <Link to={`/details/${toolId}/edit`} className={styles["btn-edit"]}>Edit</Link>
                     <Link to={`/details/${toolId}/delete`} className={styles["btn-delete"]}>Delete</Link>
 
+                    {isAuthenticated &&
+                        <>
+                            <Link to={`/details/${toolId}/rent`} className={styles["btn-rent"]} >Rent</Link>
 
-                    <Link to={`/details/${toolId}/rent` } className={styles["btn-rent"]} >Rent</Link>
-                    
-                    <p className="wish-pub">You already added this tool to your rent list</p>
+                            <p className="wish-pub">You already added this tool to your rent list</p> </>}
+
                     <Link to={'/catalog'} className={styles["btn-back"]}>Back</Link>
 
                 </div>

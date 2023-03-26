@@ -3,6 +3,8 @@ import styles from './EditTool.module.css'
 // import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import useForm from '../../../hooks/useForm';
+import { useContext } from 'react';
+import { ToolContext } from '../../../contexts/ToolContext';
 
 export default function EditTool({
     _id,
@@ -17,6 +19,7 @@ export default function EditTool({
     formValidate,
 }) {
     const { toolId } = useParams();
+    const { token } = useContext(ToolContext)
     // const [tool, setTool] = useState()
 
     // useEffect(() => {
@@ -28,7 +31,7 @@ export default function EditTool({
 
     // }, [toolId]);
 
-    const {formValues, onChangeHandler} = useForm({
+    const { formValues, onChangeHandler } = useForm({
         brand,
         category,
         description,
@@ -43,15 +46,16 @@ export default function EditTool({
     // };
 
     const onToolEditSubmit = (e) => {
-        onToolEdit(e, _id);
-        navigate('/catalog');
+        console.log(token)
+        onToolEdit(formValues, _id, token);
+        navigate(`/details/${toolId}`);
     };
 
     return (
 
         <div className={styles["create-form-container"]}>
 
-            <form className={styles["form"]} onSubmit={(e) => onToolEditSubmit(e, _id)} >
+            <form className={styles["form"]} onSubmit={(e) => onToolEditSubmit(e, toolId)} >
 
                 <h3 className={styles["h2"]}>Edit tool</h3>
                 <label className={styles["label"]}>Brand:</label>
@@ -94,7 +98,7 @@ export default function EditTool({
                     </>
                 }
 
-                <input type="submit" value="Add" className={styles["btn"]} />
+                <input type="submit" value="Edit" className={styles["btn"]} />
             </form>
         </div>
     )

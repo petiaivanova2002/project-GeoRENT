@@ -11,6 +11,13 @@ const request = async (method, url, data) => {
         }
     };
 
+    // if (token) {
+    //     options.headers = {
+    //         // ...options.headers,
+    //         'X-Authorization': token,
+    //     }
+    // }
+
     const response = await fetch(url, options);
 
     if (response.status === 204) {

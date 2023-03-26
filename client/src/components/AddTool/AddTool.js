@@ -1,5 +1,5 @@
 import styles from './AddTool.module.css'
-import { useState } from 'react'
+import { useState } from 'react'    
 import { useNavigate } from 'react-router-dom';
 import useForm from '../../hooks/useForm';
 
@@ -8,14 +8,14 @@ export default function Add({
     formErrors,
     formValidate,
 }) {
-    const {formValues, onChangeHandler} = useForm({
+    const {formValues, onChangeHandler, onSubmit} = useForm({
         brand: '',
         category: '',
         description: '',
         imageUrl: '',
         price: '',
         weeklyPrice: '',
-    });
+    }, onToolAdd);
     const navigate = useNavigate();
 
     // const onChangeHandler = (e) => {
@@ -39,7 +39,7 @@ export default function Add({
 
         <div className={styles["create-form-container"]}>
 
-            <form className={styles["form"]} onSubmit={onToolAddSubmit} >
+            <form className={styles["form"]} onSubmit={onSubmit} >
 
                 <h3 className={styles["h2"]}>Add tool for rent</h3>
                 <label className={styles["label"]}>Brand:</label>

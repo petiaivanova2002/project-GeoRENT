@@ -54,27 +54,29 @@ function App() {
     console.log(selectedTool);  // asinhronno e i zatowa e null (rezultata idwa predi da se e izpylnilo)
   };
 
-  const onToolAdd = async (e) => {
-    e.preventDefault();
+  const onToolAdd = async (data, token) => {
+    // e.preventDefault();
 
-    const formData = new FormData(e.currentTarget);
-    console.log(formData)
-    const data = Object.fromEntries(formData);
+    // const formData = new FormData(e.currentTarget);
+    // console.log(formData)
+    // const data = Object.fromEntries(formData);
 
-    const createdTool = await toolsService.create(data);
+    const createdTool = await toolsService.create(data, auth.accessToken);
 
     setTools(state => [...state, createdTool]);
+    navigate('/catalog');
 
   };
 
-  const onToolEdit = async (e, toolId) => {
-    e.preventDefault();
+  const onToolEdit = async (data, toolId, token) => {
+    // e.preventDefault();
 
-    const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData);
+    // const formData = new FormData(e.currentTarget);
+    // const data = Object.fromEntries(formData);
 
-    const updatedTool = await toolsService.update(toolId, data);
+    const updatedTool = await toolsService.update(data,toolId, auth.accessToken);
     setTools(state => state.map(x => x._id === toolId ? updatedTool : x));
+    navigate(`/details/${toolId}`);
   }
 
   const onToolDelete = async (toolId) => {
@@ -129,23 +131,23 @@ function App() {
   };
 
   const onRegisterSubmit = async (values) => {
-const{repeatPassword, ...registerData} = values;
-if(repeatPassword !== registerData.password){
-  return;
-}
+    const { repeatPassword, ...registerData } = values;
+    if (repeatPassword !== registerData.password) {
+      return;
+    }
 
     try {
       const result = await authService.register(registerData);
       setAuth(result);
       navigate('/')
     }
-    catch(error){
+    catch (error) {
       console.log('Error!!!')
     }
   };
 
-  const onLogout = async () =>{
-    // await authService.logout();
+  const onLogout = async (token) => {
+    await authService.logout(auth.accessToken);
     setAuth({});
   }
 
