@@ -17,7 +17,9 @@ export const logout = async (token) => {
         }
     });
     return response;
-}
+};
+
+
 
 // export const login = async (loginData) => {
 //     const response = await fetch(`${baseUrl}/login`, {

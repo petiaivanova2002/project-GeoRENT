@@ -12,11 +12,16 @@ export default function useForm(initialValues, onSubmitHandler) {
         e.preventDefault();
         onSubmitHandler(formValues)
     };
+
+    const changeFormValues = (newFormValues) => {
+        setFormValues(newFormValues);
+    };
     
     return {
         formValues,
         onChangeHandler,
         onSubmit,
+        changeFormValues,
     }
 
 }

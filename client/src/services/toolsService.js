@@ -1,7 +1,9 @@
 const baseUrl = "http://localhost:3030/data/tools"
 
 export const getAll = async () => {
-    const response = await fetch(baseUrl);
+    // const relationQuery = encodeURIComponent(`author=_ownerId:users`)
+    const response = await fetch(`${baseUrl}`);
+    // ?load=${relationQuery}
     const result = await response.json();
     // console.log(result)
 
@@ -9,12 +11,36 @@ export const getAll = async () => {
 };
 
 export const getOne = async (toolId) => {
+    // const relationQuery = encodeURIComponent('author=_ownerId:users')
     const response = await fetch(`${baseUrl}/${toolId}`);
+   
     const result = await response.json();
     // console.log(result);
 
     return result;
 };
+
+// export const getByOwner = async (token) => {
+//     const relationQuery = encodeURIComponent('author=_ownerId:users')
+
+//     const response = await fetch(`${baseUrl}?load=${relationQuery}`, {
+//         headers: {
+//             'X-Authorization': token
+//         }
+//     });
+//     const result = await response.json();
+//     console.log(result);
+
+
+//     return result;
+// }
+
+// export const getByCategory = async (category) => {
+//     const response= await fetch(`${baseUrl}/${category}`);
+//     const result = await response.json();
+//     console.log(result)
+//     return result;
+// }
 
 export const create = async (toolData, token) => {
     const { ...data } = toolData;
@@ -34,18 +60,18 @@ export const create = async (toolData, token) => {
     return result;
 };
 
-export const remove = async (toolId) => {
+export const remove = async (toolId, token) => {
     const response = await fetch(`${baseUrl}/${toolId}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: {
+            'X-Authorization': token
+        }
     })
-    const result = await response.json();
-//    console.log(result)
+    return response;
+};
 
-    return result;
-}
-
-export const update = async ( toolData,toolId,token) => {
-    const {...data} = toolData;
+export const update = async (toolData, toolId, token) => {
+    const { ...data } = toolData;
     console.log(data)
     const response = await fetch(`${baseUrl}/${toolId}`, {
         method: 'PUT',
@@ -60,4 +86,4 @@ export const update = async ( toolData,toolId,token) => {
     console.log(result)
 
     return result;
-}
+};

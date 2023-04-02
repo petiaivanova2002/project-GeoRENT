@@ -9,21 +9,22 @@ export default function ToolsCatalog({
     // const onClose = () => {
     //     setSelectedTool(null);
     // }
+    console.log(tools)
     return (
         <>
             {/* {selectedTool && <Details {...selectedTool}  />} */}
             <section className={styles["catalog"]} id="catalog">
                 <h2>Tools for your daily work!</h2>
                 <div className={styles["container"]}>
-                    {tools.map(tool => <Tool
-                        {...tool}
-                        key={tool._id}                      
-                        onDetailsTool={onDetailsTool}
-                    />)}
                     {tools.length === 0 && (
 
-                    <h2 className={styles["no-tool"]}>There are no tool for rent yet...</h2>
+                        <h2 className={styles["no-tool"]}>There are no tool for rent yet...</h2>
                     )}
+                    {tools.length !== 0 && tools.map(tool => <Tool
+                        {...tool}
+                        key={tool._id}
+                        onDetailsTool={onDetailsTool}
+                    />)}
 
 
                 </div>

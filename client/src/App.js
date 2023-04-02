@@ -2,7 +2,7 @@
 // import './App.css';
 import { useEffect, useState } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom'
-import { ToolContext } from './contexts/ToolContext';
+import { AuthContext } from './contexts/AuthContext';
 
 import * as toolsService from './services/toolsService';
 import * as authService from './services/authService';
@@ -19,13 +19,17 @@ import CategoryItems from './components/ToolsCatalog/CategoryItems/CategoryItems
 import Register from './components/Register/Register';
 import Login from './components/Login/Login';
 import Logout from './components/Logout/Logout';
+import MyTools from './components/Profile/MyTools/MyTools';
+import MyRents from './components/Profile/MyRents/MyRents';
+import NotFound from './components/NotFound/NotFound'
 
 function App() {
 
   const [tools, setTools] = useState([]);
   const [selectedTool, setSelectedTool] = useState(null);
+  const [myRents, setMyRents] = useState([])
   const [auth, setAuth] = useState({});
-  const navigate = useNavigate();
+   const navigate = useNavigate();
 
   const [formErrors, setFormErrors] = useState({
     brand: '',
@@ -40,7 +44,7 @@ function App() {
     toolsService.getAll()
       .then(data => {
         // console.log(data)
-        setTools(Object.values(data));
+        setTools(data);
       })
   }, []);
 
@@ -51,7 +55,7 @@ function App() {
 
     setSelectedTool(tool);
 
-    console.log(selectedTool);  // asinhronno e i zatowa e null (rezultata idwa predi da se e izpylnilo)
+    // console.log(selectedTool);  // asinhronno e i zatowa e null (rezultata idwa predi da se e izpylnilo)
   };
 
   const onToolAdd = async (data, token) => {
@@ -62,27 +66,29 @@ function App() {
     // const data = Object.fromEntries(formData);
 
     const createdTool = await toolsService.create(data, auth.accessToken);
+    createdTool.rented = '';
 
-    setTools(state => [...state, createdTool]);
+    setTools(state => [...state, createdTool]);   
     navigate('/catalog');
 
   };
 
-  const onToolEdit = async (data, toolId, token) => {
+  const onToolEdit = async (data, toolId) => {
     // e.preventDefault();
 
     // const formData = new FormData(e.currentTarget);
     // const data = Object.fromEntries(formData);
 
-    const updatedTool = await toolsService.update(data,toolId, auth.accessToken);
-    setTools(state => state.map(x => x._id === toolId ? updatedTool : x));
-    navigate(`/details/${toolId}`);
+    const updatedTool = await toolsService.update(data, data._id, auth.accessToken);
+    setTools(state => state.map(x => x._id === data._id ? updatedTool : x));
+    navigate(`/details/${data._id}`);
   }
 
   const onToolDelete = async (toolId) => {
-    await toolsService.remove(toolId)
+    await toolsService.remove(toolId, auth.accessToken)
     setTools(state => state.filter(tool => tool._id !== toolId));
     console.log(tools);
+    // navigate('/catalog');
   };
 
   const formValidate = (e) => {
@@ -149,6 +155,15 @@ function App() {
   const onLogout = async (token) => {
     await authService.logout(auth.accessToken);
     setAuth({});
+  };
+
+  const onToolRent = async (toolId) => {
+    let myNewRent = await toolsService.getOne(toolId);
+    myNewRent.rented = auth._id
+    setMyRents(state => [...state, myNewRent]);
+    setTools(state => state.filter(x => x._id !== toolId));
+    console.log(myRents)
+    navigate('/myRents')
   }
 
   const contextValues = {
@@ -159,10 +174,13 @@ function App() {
     isAuthenticated: !!auth.accessToken,
     onRegisterSubmit,
     onLogout,
+    selectedTool,
+    onToolRent,   
+    myRents   
   }
 
   return (
-    <ToolContext.Provider value={contextValues}>
+    <AuthContext.Provider value={contextValues}>
       <div>
         <Navigation />
         <Routes>
@@ -170,18 +188,26 @@ function App() {
           <Route path='/catalog' element={<ToolsCatalog tools={tools} onDetailsTool={onDetailsTool} />} />
           <Route path='/add' element={<AddTool onToolAdd={onToolAdd} formErrors={formErrors} formValidate={formValidate} />} />
           <Route path='/details/:toolId' element={<Details {...selectedTool} />} />
-          <Route path='/details/:toolId/edit' element={<EditTool {...selectedTool} onToolEdit={onToolEdit} formErrors={formErrors} formValidate={formValidate} />} />
-          <Route path='/details/:toolId/delete' element={<Delete {...selectedTool} onToolDelete={onToolDelete} />} />
+          <Route path='/details/:toolId/edit' element={<EditTool {...selectedTool} onDetailsTool={onDetailsTool} onToolEdit={onToolEdit} formErrors={formErrors} formValidate={formValidate} />} />
+          <Route path='/details/:toolId/delete' element={<Delete {...selectedTool} onDetailsTool={onDetailsTool} onToolDelete={onToolDelete} />} />
           <Route path='/catalog/:categoryItems' element={<CategoryItems tools={tools} />} />
           <Route path='/register' element={<Register />} />
           <Route path='/login' element={<Login />} />
           <Route path='/logout' element={<Logout />} />
+          <Route path='/myTools' element={<MyTools tools={tools} />} />
+          <Route path='/myRents' element={<MyRents />} />
+          <Route path='/details/:toolId/rent' element={<Delete {...selectedTool} onToolDelete={onToolDelete} />} />
+          <Route path='/404' element={<NotFound />} />
+
+
+
+
 
 
         </Routes>
         <Footer />
       </div>
-    </ToolContext.Provider>
+    </AuthContext.Provider>
   );
 }
 

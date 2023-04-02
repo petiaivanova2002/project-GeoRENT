@@ -1,12 +1,12 @@
 import styles from './Login.module.css';
 import { Link } from 'react-router-dom';
 import { useContext } from 'react';
-import { ToolContext } from '../../contexts/ToolContext';
+import { AuthContext } from '../../contexts/AuthContext';
 import useForm from '../../hooks/useForm';
 
 
 export default function Login() {
-    const { onLoginSubmit } = useContext(ToolContext);
+    const { onLoginSubmit } = useContext(AuthContext);
     const { formValues, onChangeHandler, onSubmit } = useForm({
         email: '',
         password: ''

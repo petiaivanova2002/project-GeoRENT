@@ -1,17 +1,13 @@
 import Tool from '../Tool/Tool';
 import styles from './CategoryItems.module.css'
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import * as toolService from '../../../services/toolsService'
 
-export default function ToolsCatalog({
+export default function CategoryItems({
     tools,
     onDetailsTool,
 }) {
-    const { categoryItems } = useParams();
-    // const [selectedCategory, setSelectedCategory] = useState(tools);
-    const selectedCategory = tools.filter(x => x.category.toLowerCase() === categoryItems.toLowerCase())
-    console.log(categoryItems);
-    console.log(selectedCategory);
-
     const categoryProducts = {
         lasers:'Laser scanning systems',
         gps: 'GPS receivers',
@@ -20,7 +16,25 @@ export default function ToolsCatalog({
         levels: 'Digital levels',
         accessories: 'Accessories',
     }
-    console.log(categoryProducts[categoryItems])
+    const { categoryItems } = useParams();
+    // const [selectedCategory, setSelectedCategory] = useState();
+
+    // useEffect(() => {
+    //     toolService.getByCategory(categoryItems)
+    //     .then(result => {
+    //         // console.log(result)
+    //         setSelectedCategory(result)
+    //     })
+
+        
+    // },[categoryItems])
+    
+    const selectedCategory = tools.filter(x => x.category.toLowerCase() === categoryProducts[categoryItems].toLowerCase());      
+    // setSelectedCategory(selection)
+    console.log(categoryItems);
+    // console.log(selectedCategory);
+
+    // console.log(categoryProducts[categoryItems])
 
     return (
         <>

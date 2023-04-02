@@ -4,10 +4,10 @@ import logo from './images.png';
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
-import { ToolContext } from '../../contexts/ToolContext';
+import { AuthContext } from '../../contexts/AuthContext';
 
 export default function Navigation() {
-  const { isAuthenticated, email } = useContext(ToolContext)
+  const { isAuthenticated, email } = useContext(AuthContext)
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
       <div className="container-fluid">
@@ -28,7 +28,7 @@ export default function Navigation() {
               <ul className="dropdown-menu">
                 <li><Link className="dropdown-item" to="/catalog/lasers">Laser scanning sistems</Link></li>
                 <li><Link className="dropdown-item" to="/catalog/gps">GPS receivers</Link></li>
-                <li><Link className="dropdown-item" to="/catalog/drones">Drons</Link></li>
+                <li><Link className="dropdown-item" to="/catalog/drones">Drones</Link></li>
                 <li><Link className="dropdown-item" to="/catalog/totals">Total stations</Link></li>
                 <li><Link className="dropdown-item" to="/catalog/levels">Digital levels</Link></li>
                 <li><Link className="dropdown-item" to="/catalog/accessories">Accessories</Link></li>
@@ -43,19 +43,22 @@ export default function Navigation() {
                   <Link className="nav-link" to="/add">Add tool</Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/myTool">My tools</Link>
+                  <Link className="nav-link" to="/myTools">My tools</Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/iRent">I rent</Link>
+                  <Link className="nav-link" to="/myRents">My rents</Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="logout">Logout {email}</Link>               
+                  <Link className="nav-link" to="/logout">Logout </Link>               
+                </li>
+                <li className="nav-item">
+                  <p className="nav-link" > {email}</p>               
                 </li>
           
               </>
-            )}
+             )} 
 
-            {!isAuthenticated && (
+             {!isAuthenticated && ( 
               <>
                 <li className="nav-item">
                   <Link className="nav-link" to="/register">Register</Link>
@@ -64,7 +67,7 @@ export default function Navigation() {
                   <Link className="nav-link" to="/login">Login</Link>
                 </li>
               </>
-            )}
+            )} 
        
           </ul>
         </div>

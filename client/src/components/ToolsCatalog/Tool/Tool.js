@@ -8,6 +8,7 @@ export default function Tool({
     imageUrl,
     pricePerMounth,
     onDetailsTool,
+   
 }) {
     return (
         <div className={styles["tool"]}>
@@ -24,7 +25,7 @@ export default function Tool({
             </div>
             
             <button type='button' className={styles["details-btn"]} >
-                <Link to={`/details/${_id}`} className={styles["details"]} onClick={() => onDetailsTool(_id)}>Details</Link>
+                <Link to={`/details/${_id}`} className={styles["details"]} onSubmit={() => onDetailsTool(_id)}>Details</Link>
             </button>
                 
       
