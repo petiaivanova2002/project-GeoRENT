@@ -1,27 +1,36 @@
 import Tool from '../../ToolsCatalog/Tool/Tool';
 import styles from './MyRents.module.css'
 import { AuthContext } from '../../../contexts/AuthContext';
-import { useState, useContext } from 'react';
-// import * as toolService from '../../services/toolsService'
+import { useState, useEffect, useContext } from 'react';
+// import { useParams } from 'react-router-dom';
+// import * as toolService from '../../../services/toolsService'
 
 
 export default function MyRents() {
-    // const [myTools, setMyTools] = useState([])
-    const { myRents, userId } = useContext(AuthContext);
-    // console.log(tools);
+
+    const { userId, myRents } = useContext(AuthContext);
+   
+    
 
 
     // const [selectedCategory, setSelectedCategory] = useState();
 
     // useEffect(() => {
-    //     toolService.getByOwner(userId, token)
+    //     toolService.getAll()
     //         .then(result => {
     //             // console.log(result)
-    //             setMyTools(result)
+    //             setMyRentedTools(result)
     //         })
-    // }, [userId])
+    // }, [])
 
-    const userTools = myRents.filter(x => x.rented === userId);
+    // const getRented = async (toolId) => {
+    //     const myRented = toolService.getOne(toolId)
+    //     setMyRentedTools(myRented)
+    // }
+
+
+
+    const rentedTools = myRents.filter(x => x.rented === userId);
 
     return (
         <>
@@ -29,12 +38,13 @@ export default function MyRents() {
             <h3>My rents</h3>
                 <div className={styles["container"]}>
 
-                    {(userTools.length === 0) && (
+                    {(rentedTools.length === 0) && (
                         <h2 className={styles["no-tool"]}>There are no my rents yet...</h2>
                     )};
 
-                    {(userTools.length !== 0) && (myRents.map(tool => <Tool
+                    {(rentedTools.length !== 0) && (rentedTools.map(tool => <Tool
                         {...tool}
+                        key={tool._id}
                     />))}
                 </div>
             </section>

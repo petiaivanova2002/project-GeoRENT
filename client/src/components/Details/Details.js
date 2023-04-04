@@ -12,7 +12,7 @@ export default function Details({
     // description,
     // imageUrl,
     // price,
-   
+
 
 }) {
     const { toolId } = useParams();
@@ -31,7 +31,7 @@ export default function Details({
     }, [toolId]);
 
 
-//   const email = tool.author.email
+    //   const email = tool.author.email
 
     //     const ownerInfo = async ( ownerId, token) => {
     // const response = await fetch(`"http://localhost:3030/users"/${ownerId}`,{
@@ -41,9 +41,10 @@ export default function Details({
     // })
     //         // const result = await userService.getOwner( tool._ownerId, token);
     //         const result = await response.json();
-    //         console.log(result);
+    console.log(myRents);
     //         setOwner(result)
     //     }
+    const isRented = myRents.find(x => x._id === toolId);
 
     return (
         <section className={styles["details-page"]}>
@@ -77,13 +78,17 @@ export default function Details({
 
                         {tool._ownerId !== userId && (
                             <>
-                                {myRents.length !== 0 && (
-
-                                    <p className="wish-pub">You already added this tool to your rent list</p>
+                                {isRented && (
+                                    <>
+                                        <p className="wish-pub">You already added this tool to your rent list</p>
+                                        <Link to={`/details/${userId}/rent`} className={styles["btn-back"]}>Back</Link>
+                                    </>
                                 )}
-                                {myRents.length === 0 && (
-
-                                    <Link to={`/details/${toolId}/rent`} className={styles["btn-rent"]} onClick={() => onToolRent(toolId)}>Rent</Link>
+                                {!isRented && (
+                                    <>
+                                        <Link to={`/details/${userId}/rent`} className={styles["btn-rent"]} onClick={() => onToolRent(toolId)}>Rent</Link>
+                                        <Link to={'/catalog'} className={styles["btn-back"]}>Back</Link>
+                                    </>
                                 )}
 
 
@@ -93,7 +98,7 @@ export default function Details({
 
                     </div>
                 )}
-                <Link to={'/catalog'} className={styles["btn-back"]}>Back</Link>
+
             </article>
         </section>
 

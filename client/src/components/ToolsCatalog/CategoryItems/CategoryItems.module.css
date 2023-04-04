@@ -1,8 +1,8 @@
 .container {
-    background: url(../../static/homeImage_1.jpg);
-    background-size: cover;
+    background: url('../../static/homeImage_1.jpg') ;
+    background-size: contain;
     background-position: center;
-      margin: 3%;
+      margin: 1%;
       display: flex;
       flex-wrap: wrap;
       justify-content: space-around;
@@ -19,5 +19,5 @@
       border: 1px solid rgba(0, 0, 0, 0.556);
       padding: 20px;
       margin-top: 10%;
-      box-shadow: 0 0 10px #00000070;
-    }
+      box-shadow: 0 0 10px black;
+    color: wheat;    }

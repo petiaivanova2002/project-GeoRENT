@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthContext';
 
 export default function Navigation() {
-  const { isAuthenticated, email } = useContext(AuthContext)
+  const { isAuthenticated, email, userId } = useContext(AuthContext)
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
       <div className="container-fluid">
@@ -22,7 +22,7 @@ export default function Navigation() {
               <Link className="nav-link active" aria-current="page" to="/">Home</Link>
             </li>
             <li className="nav-item dropdown">
-              <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <a className="nav-link dropdown-toggle" href="/" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Products
               </a>
               <ul className="dropdown-menu">
@@ -38,7 +38,7 @@ export default function Navigation() {
 
             {isAuthenticated && (
               <>
-                
+
                 <li className="nav-item">
                   <Link className="nav-link" to="/add">Add tool</Link>
                 </li>
@@ -46,19 +46,19 @@ export default function Navigation() {
                   <Link className="nav-link" to="/myTools">My tools</Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/myRents">My rents</Link>
+                  <Link className="nav-link" to={`/details/${userId}/rent`}>My rents</Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/logout">Logout </Link>               
+                  <Link className="nav-link" to="/logout">Logout </Link>
                 </li>
                 <li className="nav-item">
-                  <p className="nav-link" > {email}</p>               
+                  <p className="nav-link" > {email}</p>
                 </li>
-          
-              </>
-             )} 
 
-             {!isAuthenticated && ( 
+              </>
+            )}
+
+            {!isAuthenticated && (
               <>
                 <li className="nav-item">
                   <Link className="nav-link" to="/register">Register</Link>
@@ -67,8 +67,8 @@ export default function Navigation() {
                   <Link className="nav-link" to="/login">Login</Link>
                 </li>
               </>
-            )} 
-       
+            )}
+
           </ul>
         </div>
       </div>

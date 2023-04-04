@@ -29,7 +29,7 @@ function App() {
   const [selectedTool, setSelectedTool] = useState(null);
   const [myRents, setMyRents] = useState([])
   const [auth, setAuth] = useState({});
-   const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const [formErrors, setFormErrors] = useState({
     brand: '',
@@ -66,9 +66,9 @@ function App() {
     // const data = Object.fromEntries(formData);
 
     const createdTool = await toolsService.create(data, auth.accessToken);
-    createdTool.rented = '';
+    // createdTool.rented = '';
 
-    setTools(state => [...state, createdTool]);   
+    setTools(state => [...state, createdTool]);
     navigate('/catalog');
 
   };
@@ -87,6 +87,7 @@ function App() {
   const onToolDelete = async (toolId) => {
     await toolsService.remove(toolId, auth.accessToken)
     setTools(state => state.filter(tool => tool._id !== toolId));
+    setMyRents(state => state.filter(tool => tool._id !== toolId));
     console.log(tools);
     // navigate('/catalog');
   };
@@ -163,10 +164,11 @@ function App() {
     setMyRents(state => [...state, myNewRent]);
     setTools(state => state.filter(x => x._id !== toolId));
     console.log(myRents)
-    navigate('/myRents')
+
   }
 
   const contextValues = {
+    tools,
     onLoginSubmit,
     userId: auth._id,
     token: auth.accessToken,
@@ -175,8 +177,8 @@ function App() {
     onRegisterSubmit,
     onLogout,
     selectedTool,
-    onToolRent,   
-    myRents   
+    onToolRent,
+    myRents,
   }
 
   return (
@@ -195,14 +197,9 @@ function App() {
           <Route path='/login' element={<Login />} />
           <Route path='/logout' element={<Logout />} />
           <Route path='/myTools' element={<MyTools tools={tools} />} />
-          <Route path='/myRents' element={<MyRents />} />
-          <Route path='/details/:toolId/rent' element={<Delete {...selectedTool} onToolDelete={onToolDelete} />} />
+          <Route path='/details/:userId/rent' element={<MyRents />} />
+          {/* <Route path='/details/:toolId/rent' element={<Delete {...selectedTool} onToolDelete={onToolDelete} />} /> */}
           <Route path='/404' element={<NotFound />} />
-
-
-
-
-
 
         </Routes>
         <Footer />

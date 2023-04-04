@@ -9,7 +9,7 @@ export default function CategoryItems({
     onDetailsTool,
 }) {
     const categoryProducts = {
-        lasers:'Laser scanning systems',
+        lasers: 'Laser scanning systems',
         gps: 'GPS receivers',
         drones: 'Drones',
         totals: 'Total stations',
@@ -26,28 +26,37 @@ export default function CategoryItems({
     //         setSelectedCategory(result)
     //     })
 
-        
+
     // },[categoryItems])
-    
-    const selectedCategory = tools.filter(x => x.category.toLowerCase() === categoryProducts[categoryItems].toLowerCase());      
+
+    let selectedCategory = '';
+    if(tools.length !== 0){
+
+        selectedCategory = tools.filter(x => x.category.toLowerCase() === categoryProducts[categoryItems].toLowerCase());
+    }
     // setSelectedCategory(selection)
     console.log(categoryItems);
     // console.log(selectedCategory);
 
     // console.log(categoryProducts[categoryItems])
+    console.log(selectedCategory)
 
     return (
         <>
             <section className={styles["catalog"]} id="catalog">
                 <h3>{categoryProducts[categoryItems]}</h3>
                 <div className={styles["container"]}>
-                    {selectedCategory.map(tool => <Tool
+
+                    {selectedCategory.length === 0 &&
+                        <h3 className={styles["no-tool"]}>{`There are no ${categoryProducts[categoryItems]} for rent yet...`}</h3>}
+
+                    {selectedCategory.length !== 0 && selectedCategory.map(tool => <Tool
                         {...tool}
-                        key={tool._id}                       
+                        key={tool._id}
                     />)}
-                    {tools.length === 0 && (
+                    {/* {tools.length === 0 && (
                         <h2 className={styles["no-tool"]}>There are no tool for rent yet...</h2>
-                    )};
+                    )}; */}
 
                 </div>
             </section>

@@ -48,6 +48,7 @@ export default function Add({
 
                 <label htmlFor="category" className={styles["label"]}>Category:</label>
                 <select name="category" id="category" value={formValues.category} onChange={onChangeHandler} onBlur={formValidate}>
+                <option name="" value=""></option>
                     <option name="lasers" value="Laser scanning systems">Laser scanning systems</option>
                     <option name="gps" value="GPS receivers"> GPS receivers</option>
                     <option name="drones" value="Drones">Drones</option>

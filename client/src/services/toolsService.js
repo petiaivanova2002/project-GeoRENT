@@ -4,7 +4,11 @@ export const getAll = async () => {
     // const relationQuery = encodeURIComponent(`author=_ownerId:users`)
     const response = await fetch(`${baseUrl}`);
     // ?load=${relationQuery}
-    const result = await response.json();
+    let result = '';
+    if(response.ok){
+
+         result = await response.json();
+    }
     // console.log(result)
 
     return result;
@@ -44,6 +48,7 @@ export const getOne = async (toolId) => {
 
 export const create = async (toolData, token) => {
     const { ...data } = toolData;
+    data.rented = '';
     // console.log(data);
 
     const response = await fetch(baseUrl, {

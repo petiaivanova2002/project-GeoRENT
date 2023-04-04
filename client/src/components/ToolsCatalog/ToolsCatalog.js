@@ -1,15 +1,20 @@
 import Tool from './Tool/Tool';
-import styles from './ToolsCatalog.module.css'
+import styles from './ToolsCatalog.module.css';
+import { useContext } from 'react';
+import { AuthContext } from '../../contexts/AuthContext';
 
 export default function ToolsCatalog({
-    tools,
+ 
     onDetailsTool,
 }) {
+
+    const { tools } = useContext(AuthContext);
 
     // const onClose = () => {
     //     setSelectedTool(null);
     // }
     console.log(tools)
+    console.log(tools.length)
     return (
         <>
             {/* {selectedTool && <Details {...selectedTool}  />} */}
@@ -18,7 +23,7 @@ export default function ToolsCatalog({
                 <div className={styles["container"]}>
                     {tools.length === 0 && (
 
-                        <h2 className={styles["no-tool"]}>There are no tool for rent yet...</h2>
+                        <h2 className={styles["no-tool"]}>There are no tools for rent yet...</h2>
                     )}
                     {tools.length !== 0 && tools.map(tool => <Tool
                         {...tool}
