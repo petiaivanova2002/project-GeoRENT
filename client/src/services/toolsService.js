@@ -1,7 +1,6 @@
 const baseUrl = "http://localhost:3030/data/tools"
 
 export const getAll = async () => {
-    // const relationQuery = encodeURIComponent(`author=_ownerId:users`)
     const response = await fetch(`${baseUrl}`);
     // ?load=${relationQuery}
     let result = '';
@@ -15,7 +14,8 @@ export const getAll = async () => {
 };
 
 export const getOne = async (toolId) => {
-    // const relationQuery = encodeURIComponent('author=_ownerId:users')
+//     const searchQuery = encodeURIComponent(`toolId="${toolId}"`);
+//     const relationQuery = encodeURIComponent(`author=_ownerId:users`)
     const response = await fetch(`${baseUrl}/${toolId}`);
    
     const result = await response.json();

@@ -3,22 +3,18 @@ import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { useState, useEffect, useContext } from 'react';
 import * as toolsService from '../../services/toolsService';
+// import * as authService from '../../services/toolsService';
 import { AuthContext } from '../../contexts/AuthContext';
 
 export default function Details({
     _id,
-    // brand,
-    // category,
-    // description,
-    // imageUrl,
-    // price,
-
+    // toolOwner,
 
 }) {
     const { toolId } = useParams();
     const [tool, setTool] = useState([]);
-    const { isAuthenticated, userId, onToolRent, myRents } = useContext(AuthContext);
-    // const [owner, setOwner] = useState();
+   
+    const { isAuthenticated, userId, onToolRent, myRents } = useContext(AuthContext);  
 
     useEffect(() => {
 
@@ -29,6 +25,9 @@ export default function Details({
                 setTool(result)
             });
     }, [toolId]);
+
+   
+    
 
 
     //   const email = tool.author.email
@@ -41,7 +40,7 @@ export default function Details({
     // })
     //         // const result = await userService.getOwner( tool._ownerId, token);
     //         const result = await response.json();
-    console.log(myRents);
+   
     //         setOwner(result)
     //     }
     const isRented = myRents.find(x => x._id === toolId);
@@ -52,7 +51,7 @@ export default function Details({
 
             <article className={styles["details-text"]}>
                 <div>
-                    {/* Contacts: {tool[author.email]} */}
+                    {/* Contacts: */}
                 </div>
                 {/* <button onClick={() => console.log(brand)}>Test</button> */}
                 <h3> {tool.brand}</h3>

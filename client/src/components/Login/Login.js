@@ -5,7 +5,10 @@ import { AuthContext } from '../../contexts/AuthContext';
 import useForm from '../../hooks/useForm';
 
 
-export default function Login() {
+export default function Login({
+    formErrors,
+    formValidate,
+}) {
     const { onLoginSubmit } = useContext(AuthContext);
     const { formValues, onChangeHandler, onSubmit } = useForm({
         email: '',
@@ -22,16 +25,19 @@ export default function Login() {
 
                 <label className={styles["label"]}>Email:</label>
                 <input
-                    type="text"
+                required={true}
+                    type="email"
                     name="email"
                     className={styles["box"]} id="email"
                     placeholder='Enter your email'
                     value={formValues.email}
                     onChange={onChangeHandler}
-                />
+                    onBlur={formValidate} />
+                    {formErrors.email && <p className={styles["error"]}>{formErrors.email}</p>}
 
                 <label className={styles["label"]}>Password:</label>
                 <input
+                required={true}
                     type="text"
                     name="password"
                     className={styles["box"]}
@@ -39,7 +45,8 @@ export default function Login() {
                     placeholder='Enter your password'
                     value={formValues.password}
                     onChange={onChangeHandler}
-                />
+                    onBlur={formValidate}/>
+                    {formErrors.password && <p className={styles["error"]}>{formErrors.password}</p>}
 
 
                 <input type="submit" value="Login" className={styles["btn"]} />

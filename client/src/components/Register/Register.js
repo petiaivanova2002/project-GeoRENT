@@ -7,7 +7,10 @@ import { AuthContext } from '../../contexts/AuthContext';
 import { Link } from 'react-router-dom'
 
 
-export default function Register(){
+export default function Register({
+    formErrors,
+    formValidate,
+}){
     const {onRegisterSubmit} = useContext(AuthContext);
     const {formValues, onChangeHandler, onSubmit} = useForm({
         email: '',
@@ -31,7 +34,9 @@ export default function Register(){
                 id="email" 
                 placeholder='Enter your email'
                 value={formValues.email}
-                onChange = {onChangeHandler} />
+                onChange = {onChangeHandler}
+                onBlur={formValidate} />
+                {formErrors.email && <p className={styles["error"]}>{formErrors.email}</p>}
 
                 <label className={styles["label"]}>Password:</label>
                 <input 
@@ -41,7 +46,9 @@ export default function Register(){
                 id="password" 
                 placeholder='Enter your password'
                 value = {formValues.password} 
-                onChange= {onChangeHandler}/>
+                onChange= {onChangeHandler}
+                onBlur={formValidate}/>
+                {formErrors.password && <p className={styles["error"]}>{formErrors.password}</p>}
 
                 <label className={styles["label"]}>Repeat password:</label>
                 <input 
@@ -51,7 +58,9 @@ export default function Register(){
                 id="repeatPassword" 
                 placeholder='Repeat password'
                 value={formValues.repeatPassword}
-                onChange={onChangeHandler} />
+                onChange={onChangeHandler} 
+                onBlur={formValidate}/>
+                {formValues.password !== formValues.repeatPassword && <p className={styles["error"]}>{formErrors.repeatPassword}</p>}
 
 
                 <input type="submit" value="Register" className={styles["btn"]} />

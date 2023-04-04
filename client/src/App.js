@@ -38,6 +38,9 @@ function App() {
     imageUrl: '',
     price: '',
     weeklyPrice: '',
+    email: '',
+    password: '',
+    repeatPassword: '',
   });
 
   useEffect(() => {
@@ -96,29 +99,38 @@ function App() {
     const value = e.target.value;
     const categoryArray = ['GPS receivers', 'Laser scanning systems', 'Total stations', 'Drones', 'Levels', 'Accessories'];
     const errors = {};
-    if (e.target.name === 'brand' && value.length < 2 && value !== '') {
+    if (e.target.name === 'brand' && value.length < 2 && value === '') {
       // setFormErrors(state => ({...state, brand: 'Brand should be at least two characters'}))
       errors.brand = 'Brand should be at least two characters'
     }
-    if (e.target.name === 'category' && !categoryArray.includes(value) && value !== '') {
+    if (e.target.name === 'category' && !categoryArray.includes(value) && value === '') {
       // setFormErrors(state => ({ ...state, category: 'Category do not match' }))
       errors.category = 'Category do not match'
     }
-    if (e.target.name === 'description' && (value.length < 5 || value.length > 100) && value !== '') {
+    if (e.target.name === 'description' && (value.length < 5 || value.length > 100) && value === '') {
       // setFormErrors(state => ({ ...state, description: 'Description should be between 5 and 100 characters' }))
       errors.description = 'Description should be between 5 and 100 characters'
     }
-    if (e.target.name === 'imageUrl' && !value.startsWith('https://') && value !== '') {
+    if (e.target.name === 'imageUrl' && !value.startsWith('https://') && value === '') {
       // setFormErrors(state => ({ ...state, imageUrl: 'Image should starts with https://' }))
       errors.imageUrl = 'Image should starts with https://';
     }
-    if (e.target.name === 'price' && Number(value) < 0 && value !== '') {
+    if (e.target.name === 'price' && Number(value) < 0 && value === '') {
       // setFormErrors(state => ({ ...state, price: 'Price should be positive number' }))
       errors.price = 'Price should be positive number'
     }
-    if (e.target.name === 'weeklyPrice' && Number(value) < 0 && value !== '') {
+    if (e.target.name === 'weeklyPrice' && Number(value) < 0 && value === '') {
       // setFormErrors(state => ({ ...state, weeklyPrice: 'Price should be positive number' }))
       errors.weeklyPrice = 'Price should be positive number'
+    }
+    if (e.target.name === 'email' && (value.length < 8 || value === '')) {
+      errors.email = 'Email should be at least 8 characters'
+    }
+    if (e.target.name === 'password' && (value.length < 8 || value === '')) {
+      errors.password = 'Password should be at least 8 characters'
+    }
+    if (e.target.name === 'repeatPassword' ) {
+      errors.repeatPassword = 'Repeat password do not match'
     }
     setFormErrors(errors);
   };
@@ -132,7 +144,8 @@ function App() {
       navigate('/')
     }
     catch (error) {
-      console.log('Error!!!')
+      console.log('Error!!!');
+      navigate('/404');
 
     }
   };
@@ -150,10 +163,12 @@ function App() {
     }
     catch (error) {
       console.log('Error!!!')
+      navigate('/404');
     }
   };
 
   const onLogout = async (token) => {
+    
     await authService.logout(auth.accessToken);
     setAuth({});
   };
@@ -188,17 +203,16 @@ function App() {
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/catalog' element={<ToolsCatalog tools={tools} onDetailsTool={onDetailsTool} />} />
+          <Route path='/catalog/:categoryItems' element={<CategoryItems tools={tools} />} />
           <Route path='/add' element={<AddTool onToolAdd={onToolAdd} formErrors={formErrors} formValidate={formValidate} />} />
           <Route path='/details/:toolId' element={<Details {...selectedTool} />} />
           <Route path='/details/:toolId/edit' element={<EditTool {...selectedTool} onDetailsTool={onDetailsTool} onToolEdit={onToolEdit} formErrors={formErrors} formValidate={formValidate} />} />
           <Route path='/details/:toolId/delete' element={<Delete {...selectedTool} onDetailsTool={onDetailsTool} onToolDelete={onToolDelete} />} />
-          <Route path='/catalog/:categoryItems' element={<CategoryItems tools={tools} />} />
-          <Route path='/register' element={<Register />} />
-          <Route path='/login' element={<Login />} />
+          <Route path='/register' element={<Register formErrors={formErrors} formValidate={formValidate} />} />
+          <Route path='/login' element={<Login formErrors={formErrors} formValidate={formValidate} />} />
           <Route path='/logout' element={<Logout />} />
           <Route path='/myTools' element={<MyTools tools={tools} />} />
           <Route path='/details/:userId/rent' element={<MyRents />} />
-          {/* <Route path='/details/:toolId/rent' element={<Delete {...selectedTool} onToolDelete={onToolDelete} />} /> */}
           <Route path='/404' element={<NotFound />} />
 
         </Routes>

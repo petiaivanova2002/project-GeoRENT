@@ -1,5 +1,7 @@
 import styles from './Tool.module.css'
 import { Link } from 'react-router-dom'
+import { useState } from 'react';
+import * as userService from '../../../services/userService'
 export default function Tool({
     _id,
     brand,
@@ -8,8 +10,15 @@ export default function Tool({
     imageUrl,
     pricePerMounth,
     onDetailsTool,
+    // _ownerId,
    
 }) {
+    // const [toolOwner, setToolOwner] = useState(null);
+
+    // const getToolOwner = async(ownerId) => {
+    //     const owner = await userService.getOne(_ownerId)
+    //     setToolOwner(owner)
+    //  }
     return (
         <div className={styles["tool"]}>
             <div className={styles["info-container"]}>
