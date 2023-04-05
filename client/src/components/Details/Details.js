@@ -13,8 +13,8 @@ export default function Details({
 }) {
     const { toolId } = useParams();
     const [tool, setTool] = useState([]);
-   
-    const { isAuthenticated, userId, onToolRent, myRents } = useContext(AuthContext);  
+
+    const { isAuthenticated, userId, onToolRent, myRents } = useContext(AuthContext);
 
     useEffect(() => {
 
@@ -26,8 +26,8 @@ export default function Details({
             });
     }, [toolId]);
 
-   
-    
+
+
 
 
     //   const email = tool.author.email
@@ -40,7 +40,7 @@ export default function Details({
     // })
     //         // const result = await userService.getOwner( tool._ownerId, token);
     //         const result = await response.json();
-   
+
     //         setOwner(result)
     //     }
     const isRented = myRents.find(x => x._id === toolId);
@@ -70,10 +70,9 @@ export default function Details({
                             <div>
                                 <Link to={`/details/${toolId}/edit`} className={styles["btn-edit"]}>Edit</Link>
                                 <Link to={`/details/${toolId}/delete`} className={styles["btn-delete"]}>Delete</Link>
-
+                                <Link to={`/catalog`} className={styles["btn-back"]}>Back</Link>
                             </div>
-                        )
-                        }
+                        )}
 
                         {tool._ownerId !== userId && (
                             <>
@@ -89,14 +88,15 @@ export default function Details({
                                         <Link to={'/catalog'} className={styles["btn-back"]}>Back</Link>
                                     </>
                                 )}
-
-
                             </>
                         )
                         }
 
                     </div>
                 )}
+                {!isAuthenticated &&
+                    <Link to={`/catalog`} className={styles["btn-back"]}>Back</Link>
+                }
 
             </article>
         </section>

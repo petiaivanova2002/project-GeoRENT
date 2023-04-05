@@ -1,0 +1,11 @@
+.not-found {
+    text-align: center;
+}
+
+.btn {
+    text-decoration: none;
+}
+
+.btn:hover {
+    text-decoration: underline;
+}

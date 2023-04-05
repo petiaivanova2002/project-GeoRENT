@@ -9,15 +9,11 @@ export default function ToolsCatalog({
 }) {
 
     const { tools } = useContext(AuthContext);
-
-    // const onClose = () => {
-    //     setSelectedTool(null);
-    // }
+ 
     console.log(tools)
     console.log(tools.length)
     return (
         <>
-            {/* {selectedTool && <Details {...selectedTool}  />} */}
             <section className={styles["catalog"]} id="catalog">
                 <h2>Tools for your daily work!</h2>
                 <div className={styles["container"]}>

@@ -1,5 +1,3 @@
-// import logo from './logo.svg';s
-// import './App.css';
 import { useEffect, useState } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom'
 import { AuthContext } from './contexts/AuthContext';
@@ -22,10 +20,12 @@ import Logout from './components/Logout/Logout';
 import MyTools from './components/Profile/MyTools/MyTools';
 import MyRents from './components/Profile/MyRents/MyRents';
 import NotFound from './components/NotFound/NotFound'
+import Loading from './components/Loading/Loading';
 
 function App() {
 
   const [tools, setTools] = useState([]);
+  const [loading, setLoading] = useState(true)
   const [selectedTool, setSelectedTool] = useState(null);
   const [myRents, setMyRents] = useState([])
   const [auth, setAuth] = useState({});
@@ -48,16 +48,21 @@ function App() {
       .then(data => {
         // console.log(data)
         setTools(data);
+        setLoading(false)
       })
   }, []);
 
 
   const onDetailsTool = async (toolId) => {
-    const tool = await toolsService.getOne(toolId);
-    console.log(tool)
+    try {
+      const tool = await toolsService.getOne(toolId);
+      console.log(tool)
 
-    setSelectedTool(tool);
-
+      setSelectedTool(tool);
+    } catch (error) {
+      console.log('Error!!!');
+      navigate('/404');
+    }
     // console.log(selectedTool);  // asinhronno e i zatowa e null (rezultata idwa predi da se e izpylnilo)
   };
 
@@ -67,13 +72,16 @@ function App() {
     // const formData = new FormData(e.currentTarget);
     // console.log(formData)
     // const data = Object.fromEntries(formData);
+    try {
+      const createdTool = await toolsService.create(data, auth.accessToken);
+      // createdTool.rented = '';
 
-    const createdTool = await toolsService.create(data, auth.accessToken);
-    // createdTool.rented = '';
-
-    setTools(state => [...state, createdTool]);
-    navigate('/catalog');
-
+      setTools(state => [...state, createdTool]);
+      navigate('/catalog');
+    } catch (error) {
+      console.log('Error!!!');
+      navigate('/404');
+    }
   };
 
   const onToolEdit = async (data, toolId) => {
@@ -81,18 +89,28 @@ function App() {
 
     // const formData = new FormData(e.currentTarget);
     // const data = Object.fromEntries(formData);
+    try {
+      const updatedTool = await toolsService.update(data, data._id, auth.accessToken);
+      setTools(state => state.map(x => x._id === data._id ? updatedTool : x));
+      navigate(`/details/${data._id}`);
+    } catch (error) {
+      console.log('Error!!!');
+      navigate('/404');
+    }
 
-    const updatedTool = await toolsService.update(data, data._id, auth.accessToken);
-    setTools(state => state.map(x => x._id === data._id ? updatedTool : x));
-    navigate(`/details/${data._id}`);
   }
 
   const onToolDelete = async (toolId) => {
-    await toolsService.remove(toolId, auth.accessToken)
-    setTools(state => state.filter(tool => tool._id !== toolId));
-    setMyRents(state => state.filter(tool => tool._id !== toolId));
-    console.log(tools);
-    // navigate('/catalog');
+    try {
+      await toolsService.remove(toolId, auth.accessToken)
+      setTools(state => state.filter(tool => tool._id !== toolId));
+      setMyRents(state => state.filter(tool => tool._id !== toolId));
+      console.log(tools);
+      // navigate('/catalog');
+    } catch (error) {
+      console.log('Error!!!');
+      navigate('/404');
+    }
   };
 
   const formValidate = (e) => {
@@ -126,10 +144,10 @@ function App() {
     if (e.target.name === 'email' && (value.length < 8 || value === '')) {
       errors.email = 'Email should be at least 8 characters'
     }
-    if (e.target.name === 'password' && (value.length < 8 || value === '')) {
-      errors.password = 'Password should be at least 8 characters'
+    if (e.target.name === 'password' && (value.length < 5 || value === '')) {
+      errors.password = 'Password should be at least 5 characters'
     }
-    if (e.target.name === 'repeatPassword' ) {
+    if (e.target.name === 'repeatPassword') {
       errors.repeatPassword = 'Repeat password do not match'
     }
     setFormErrors(errors);
@@ -168,16 +186,22 @@ function App() {
   };
 
   const onLogout = async (token) => {
-    
-    await authService.logout(auth.accessToken);
-    setAuth({});
+    try {
+      await authService.logout(auth.accessToken);
+      setAuth({});
+    }
+    catch (error) {
+      console.log('Error!!!')
+      navigate('/404');
+    }
   };
 
   const onToolRent = async (toolId) => {
     let myNewRent = await toolsService.getOne(toolId);
-    myNewRent.rented = auth._id
-    setMyRents(state => [...state, myNewRent]);
-    setTools(state => state.filter(x => x._id !== toolId));
+    // myNewRent.rented = auth._id
+    setMyRents(state => [...state, { ...myNewRent, rented: auth._id }]);
+    setTools(state => state.filter(tool => tool._id !== toolId));
+    // setTools(state => state.filter(x => x._id !== toolId));
     console.log(myRents)
 
   }
@@ -200,6 +224,7 @@ function App() {
     <AuthContext.Provider value={contextValues}>
       <div>
         <Navigation />
+        {loading && <Loading />}
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/catalog' element={<ToolsCatalog tools={tools} onDetailsTool={onDetailsTool} />} />
