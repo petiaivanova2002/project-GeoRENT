@@ -48,7 +48,6 @@ export default function Login({
                     onBlur={formValidate}/>
                     {formErrors.password && <p className={styles["error"]}>{formErrors.password}</p>}
 
-
                 <input type="submit" value="Login" className={styles["btn"]} />
 
                 <p className={styles["reg"]}>Don't have an account? <Link to="/register">Register</Link></p>

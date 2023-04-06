@@ -7,14 +7,14 @@ import * as toolsService from '../../services/toolsService';
 import { AuthContext } from '../../contexts/AuthContext';
 
 export default function Details({
-    _id,
+    author,
     // toolOwner,
 
 }) {
     const { toolId } = useParams();
-    const [tool, setTool] = useState([]);
+    const [tool, setTool] = useState({});
 
-    const { isAuthenticated, userId, onToolRent, myRents } = useContext(AuthContext);
+    const { isAuthenticated, userId, onToolRent, myRents,tools } = useContext(AuthContext);
 
     useEffect(() => {
 
@@ -26,11 +26,8 @@ export default function Details({
             });
     }, [toolId]);
 
-
-
-
-
-    //   const email = tool.author.email
+    console.log(tool.author)
+    //   const author = tool.author
 
     //     const ownerInfo = async ( ownerId, token) => {
     // const response = await fetch(`"http://localhost:3030/users"/${ownerId}`,{
@@ -44,6 +41,8 @@ export default function Details({
     //         setOwner(result)
     //     }
     const isRented = myRents.find(x => x._id === toolId);
+    const ownerItem= tools.filter(x => x._id === toolId);
+    console.log(ownerItem[0])
 
     return (
         <section className={styles["details-page"]}>
@@ -51,7 +50,7 @@ export default function Details({
 
             <article className={styles["details-text"]}>
                 <div>
-                    {/* Contacts: */}
+                    Contacts: {ownerItem[0].author.email} 
                 </div>
                 {/* <button onClick={() => console.log(brand)}>Test</button> */}
                 <h3> {tool.brand}</h3>
@@ -60,7 +59,7 @@ export default function Details({
                 {tool.price && (
                     <p>Price per month: {tool.price}</p>
                 )}
-                {!tool.price && (
+                {tool.weeklyPrice && (
                     <p>Price per week: {tool.weeklyPrice}</p>
                 )}
                 <p>Description: {tool.description}</p>
@@ -89,14 +88,14 @@ export default function Details({
                                     </>
                                 )}
                             </>
-                        )
-                        }
+                        )}
 
                     </div>
                 )}
-                {!isAuthenticated &&
+                {!isAuthenticated && (
+
                     <Link to={`/catalog`} className={styles["btn-back"]}>Back</Link>
-                }
+                )}
 
             </article>
         </section>

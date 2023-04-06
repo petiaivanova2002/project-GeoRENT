@@ -1,7 +1,8 @@
 const baseUrl = "http://localhost:3030/data/tools"
 
 export const getAll = async () => {
-    const response = await fetch(`${baseUrl}`);
+    const relationQuery = encodeURIComponent(`author=_ownerId:users`);
+    const response = await fetch(`${baseUrl}?load=${relationQuery}`);
     // ?load=${relationQuery}
     let result = '';
     if(response.ok){
@@ -14,8 +15,8 @@ export const getAll = async () => {
 };
 
 export const getOne = async (toolId) => {
-//     const searchQuery = encodeURIComponent(`toolId="${toolId}"`);
-//     const relationQuery = encodeURIComponent(`author=_ownerId:users`)
+    // const searchQuery = encodeURIComponent(`toolId="${toolId}"`);
+    // const relationQuery = encodeURIComponent(`author=_ownerId:users`);
     const response = await fetch(`${baseUrl}/${toolId}`);
    
     const result = await response.json();
@@ -50,8 +51,9 @@ export const create = async (toolData, token) => {
     const { ...data } = toolData;
     data.rented = '';
     // console.log(data);
+    
 
-    const response = await fetch(baseUrl, {
+    const response = await fetch(`${baseUrl}`, {
         method: 'POST',
         headers: {
             'content-type': 'application/json',

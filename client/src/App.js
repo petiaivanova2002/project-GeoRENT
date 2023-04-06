@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom'
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import { AuthContext } from './contexts/AuthContext';
 
 import * as toolsService from './services/toolsService';
@@ -52,7 +52,6 @@ function App() {
       })
   }, []);
 
-
   const onDetailsTool = async (toolId) => {
     try {
       const tool = await toolsService.getOne(toolId);
@@ -66,6 +65,8 @@ function App() {
     // console.log(selectedTool);  // asinhronno e i zatowa e null (rezultata idwa predi da se e izpylnilo)
   };
 
+
+
   const onToolAdd = async (data, token) => {
     // e.preventDefault();
 
@@ -76,7 +77,7 @@ function App() {
       const createdTool = await toolsService.create(data, auth.accessToken);
       // createdTool.rented = '';
 
-      setTools(state => [...state, createdTool]);
+      setTools(state => [...state, ({ ...createdTool, author: { email:auth.email } })]);
       navigate('/catalog');
     } catch (error) {
       console.log('Error!!!');
@@ -224,21 +225,23 @@ function App() {
     <AuthContext.Provider value={contextValues}>
       <div>
         <Navigation />
-        {loading && <Loading />}
+        {/* {loading && <Loading />} */}
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/catalog' element={<ToolsCatalog tools={tools} onDetailsTool={onDetailsTool} />} />
           <Route path='/catalog/:categoryItems' element={<CategoryItems tools={tools} />} />
           <Route path='/add' element={<AddTool onToolAdd={onToolAdd} formErrors={formErrors} formValidate={formValidate} />} />
           <Route path='/details/:toolId' element={<Details {...selectedTool} />} />
-          <Route path='/details/:toolId/edit' element={<EditTool {...selectedTool} onDetailsTool={onDetailsTool} onToolEdit={onToolEdit} formErrors={formErrors} formValidate={formValidate} />} />
-          <Route path='/details/:toolId/delete' element={<Delete {...selectedTool} onDetailsTool={onDetailsTool} onToolDelete={onToolDelete} />} />
+          <Route path='/details/:toolId/edit' element={<EditTool onToolEdit={onToolEdit} formErrors={formErrors} formValidate={formValidate} />} />
+          <Route path='/details/:toolId/delete' element={<Delete onToolDelete={onToolDelete} />} />
           <Route path='/register' element={<Register formErrors={formErrors} formValidate={formValidate} />} />
           <Route path='/login' element={<Login formErrors={formErrors} formValidate={formValidate} />} />
           <Route path='/logout' element={<Logout />} />
           <Route path='/myTools' element={<MyTools tools={tools} />} />
           <Route path='/details/:userId/rent' element={<MyRents />} />
           <Route path='/404' element={<NotFound />} />
+          <Route path='*' element={<NotFound />} />
+
 
         </Routes>
         <Footer />
