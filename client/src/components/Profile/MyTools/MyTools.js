@@ -14,9 +14,6 @@ export default function MyTools({
    
     console.log(tools)
 
-
-
-
     useEffect(() => {
         toolService.getAll()
             .then(result => {

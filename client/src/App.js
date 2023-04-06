@@ -68,11 +68,7 @@ function App() {
 
 
   const onToolAdd = async (data, token) => {
-    // e.preventDefault();
 
-    // const formData = new FormData(e.currentTarget);
-    // console.log(formData)
-    // const data = Object.fromEntries(formData);
     try {
       const createdTool = await toolsService.create(data, auth.accessToken);
       // createdTool.rented = '';
@@ -86,13 +82,10 @@ function App() {
   };
 
   const onToolEdit = async (data, toolId) => {
-    // e.preventDefault();
 
-    // const formData = new FormData(e.currentTarget);
-    // const data = Object.fromEntries(formData);
     try {
       const updatedTool = await toolsService.update(data, data._id, auth.accessToken);
-      setTools(state => state.map(x => x._id === data._id ? updatedTool : x));
+      setTools(state => state.map(x => x._id === data._id ? ({ ...updatedTool, author: { email:auth.email } }) : x));
       navigate(`/details/${data._id}`);
     } catch (error) {
       console.log('Error!!!');
