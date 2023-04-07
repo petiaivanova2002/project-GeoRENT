@@ -22,6 +22,7 @@ import MyRents from './components/Profile/MyRents/MyRents';
 import NotFound from './components/NotFound/NotFound'
 import Loading from './components/Loading/Loading';
 import RouteGuard from './components/common/RouteGuard';
+import AboutPage from './components/AboutPage/AboutPage';
 
 function App() {
 
@@ -238,7 +239,9 @@ function App() {
           <Route path='/register' element={<Register formErrors={formErrors} formValidate={formValidate} />} />
           <Route path='/login' element={<Login formErrors={formErrors} formValidate={formValidate} />} />
           <Route path='/404' element={<NotFound />} />
+          <Route path='/about' element={<AboutPage />} />
           <Route path='*' element={<NotFound />} />
+
 
 
         </Routes>

@@ -49,9 +49,7 @@ export default function Details({
             <h1>Details</h1>
 
             <article className={styles["details-text"]}>
-                <div>
-                    Contacts: {ownerItem[0].author.email} 
-                </div>
+           
                 {/* <button onClick={() => console.log(brand)}>Test</button> */}
                 <h3> {tool.brand}</h3>
                 <h4> {tool.category}</h4>
@@ -64,6 +62,10 @@ export default function Details({
                 )}
                 <p>Description: {tool.description}</p>
                 {isAuthenticated && (
+                         <>
+                    
+                    Contacts: {ownerItem[0].author.email} 
+                
                     <div className={styles["buttons"]}>
                         {tool._ownerId === userId && (
                             <div>
@@ -91,6 +93,7 @@ export default function Details({
                         )}
 
                     </div>
+                    </>
                 )}
                 {!isAuthenticated && (
 
