@@ -21,6 +21,7 @@ import MyTools from './components/Profile/MyTools/MyTools';
 import MyRents from './components/Profile/MyRents/MyRents';
 import NotFound from './components/NotFound/NotFound'
 import Loading from './components/Loading/Loading';
+import RouteGuard from './components/common/RouteGuard';
 
 function App() {
 
@@ -73,7 +74,7 @@ function App() {
       const createdTool = await toolsService.create(data, auth.accessToken);
       // createdTool.rented = '';
 
-      setTools(state => [...state, ({ ...createdTool, author: { email:auth.email } })]);
+      setTools(state => [...state, ({ ...createdTool, author: { email: auth.email } })]);
       navigate('/catalog');
     } catch (error) {
       console.log('Error!!!');
@@ -85,7 +86,7 @@ function App() {
 
     try {
       const updatedTool = await toolsService.update(data, data._id, auth.accessToken);
-      setTools(state => state.map(x => x._id === data._id ? ({ ...updatedTool, author: { email:auth.email } }) : x));
+      setTools(state => state.map(x => x._id === data._id ? ({ ...updatedTool, author: { email: auth.email } }) : x));
       navigate(`/details/${data._id}`);
     } catch (error) {
       console.log('Error!!!');
@@ -223,15 +224,19 @@ function App() {
           <Route path='/' element={<Home />} />
           <Route path='/catalog' element={<ToolsCatalog tools={tools} onDetailsTool={onDetailsTool} />} />
           <Route path='/catalog/:categoryItems' element={<CategoryItems tools={tools} />} />
-          <Route path='/add' element={<AddTool onToolAdd={onToolAdd} formErrors={formErrors} formValidate={formValidate} />} />
           <Route path='/details/:toolId' element={<Details {...selectedTool} />} />
-          <Route path='/details/:toolId/edit' element={<EditTool onToolEdit={onToolEdit} formErrors={formErrors} formValidate={formValidate} />} />
-          <Route path='/details/:toolId/delete' element={<Delete onToolDelete={onToolDelete} />} />
+
+          <Route element={<RouteGuard />}>
+            <Route path='/add' element={<AddTool onToolAdd={onToolAdd} formErrors={formErrors} formValidate={formValidate} />} />
+            <Route path='/details/:toolId/edit' element={<EditTool onToolEdit={onToolEdit} formErrors={formErrors} formValidate={formValidate} />} />
+            <Route path='/details/:toolId/delete' element={<Delete onToolDelete={onToolDelete} />} />
+            <Route path='/myTools' element={<MyTools tools={tools} />} />
+            <Route path='/details/:userId/rent' element={<MyRents />} />
+            <Route path='/logout' element={<Logout />} />
+          </Route>
+
           <Route path='/register' element={<Register formErrors={formErrors} formValidate={formValidate} />} />
           <Route path='/login' element={<Login formErrors={formErrors} formValidate={formValidate} />} />
-          <Route path='/logout' element={<Logout />} />
-          <Route path='/myTools' element={<MyTools tools={tools} />} />
-          <Route path='/details/:userId/rent' element={<MyRents />} />
           <Route path='/404' element={<NotFound />} />
           <Route path='*' element={<NotFound />} />
 
