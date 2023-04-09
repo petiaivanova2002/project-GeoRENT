@@ -1,17 +1,11 @@
-import Tool from '../../ToolsCatalog/Tool/Tool';
+import RentedTool from '../../RentedTool/RentedTool';
 import styles from './MyRents.module.css'
 import { AuthContext } from '../../../contexts/AuthContext';
 import { useState, useEffect, useContext } from 'react';
-// import { useParams } from 'react-router-dom';
-// import * as toolService from '../../../services/toolsService'
-
 
 export default function MyRents() {
 
     const { userId, myRents } = useContext(AuthContext);
-   
-    
-
 
     // const [selectedCategory, setSelectedCategory] = useState();
 
@@ -42,7 +36,7 @@ export default function MyRents() {
                         <h2 className={styles["no-tool"]}>There are no my rents yet...</h2>
                     )};
 
-                    {(rentedTools.length !== 0) && (rentedTools.map(tool => <Tool
+                    {rentedTools && (rentedTools.map(tool => <RentedTool
                         {...tool}
                         key={tool._id}
                     />))}

@@ -68,7 +68,7 @@ export default function Navigation() {
                 </li>
               </>
             )}
-                <li className="nav-item">
+            <li className="nav-item">
               <Link className="nav-link active" aria-current="page" to="/about">About</Link>
             </li>
 

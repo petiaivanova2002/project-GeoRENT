@@ -28,7 +28,7 @@ export default function Register({
 
                 <label className={styles["label"]}>Email:</label>
                 <input 
-                type="text" 
+                type="email" 
                 name="email" 
                 className={styles["box"]} 
                 id="email" 

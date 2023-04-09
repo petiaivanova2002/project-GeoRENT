@@ -1,13 +1,14 @@
 const baseUrl = "http://localhost:3030/data/tools"
+const baseUrlRent = "http://localhost:3030/data/rents"
 
 export const getAll = async () => {
     const relationQuery = encodeURIComponent(`author=_ownerId:users`);
     const response = await fetch(`${baseUrl}?load=${relationQuery}`);
     // ?load=${relationQuery}
     let result = '';
-    if(response.ok){
+    if (response.ok) {
 
-         result = await response.json();
+        result = await response.json();
     }
     // console.log(result)
 
@@ -17,11 +18,17 @@ export const getAll = async () => {
 export const getOne = async (toolId) => {
     // const searchQuery = encodeURIComponent(`toolId="${toolId}"`);
     // const relationQuery = encodeURIComponent(`author=_ownerId:users`);
-    const response = await fetch(`${baseUrl}/${toolId}`);
-   
-    const result = await response.json();
-    // console.log(result);
+    let response = await fetch(`${baseUrl}/${toolId}`);
 
+    let result = '';
+    if (response.ok) {
+        result = await response.json();
+        // console.log(result);
+
+    } else {
+        response = await fetch(`${baseUrlRent}/${toolId}`);
+        result = await response.json();
+    }
     return result;
 };
 
@@ -51,7 +58,7 @@ export const create = async (toolData, token) => {
     const { ...data } = toolData;
     data.rented = '';
     // console.log(data);
-    
+
 
     const response = await fetch(`${baseUrl}`, {
         method: 'POST',

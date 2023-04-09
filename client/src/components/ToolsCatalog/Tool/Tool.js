@@ -27,7 +27,6 @@ export default function Tool({
             <div className={styles["info-container"]}>
                 <img src={imageUrl} alt="tool" />
                 <div className="info">
-                    {/* <p>{author.email}</p> */}
                     <h3>Brand: {brand}</h3>
                     <h4>Category: {category}</h4>
                 </div>

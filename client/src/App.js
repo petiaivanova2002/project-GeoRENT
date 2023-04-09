@@ -4,6 +4,8 @@ import { AuthContext } from './contexts/AuthContext';
 
 import * as toolsService from './services/toolsService';
 import * as authService from './services/authService';
+import * as rentService from './services/rentService';
+
 
 import Home from './components/Home/Home';
 import Navigation from './components/Navigation/Navigation';
@@ -29,7 +31,7 @@ function App() {
   const [tools, setTools] = useState([]);
   const [loading, setLoading] = useState(true)
   const [selectedTool, setSelectedTool] = useState(null);
-  const [myRents, setMyRents] = useState([])
+  const [myRents, setMyRents] = useState([]);
   const [auth, setAuth] = useState({});
   const navigate = useNavigate();
 
@@ -46,12 +48,19 @@ function App() {
   });
 
   useEffect(() => {
-    toolsService.getAll()
-      .then(data => {
+    Promise.all([
+      toolsService.getAll(),
+      rentService.getAll(auth.accessToken)
+    ])
+      .then(([data, rented]) => {
         // console.log(data)
         setTools(data);
+        if (rented) {
+          setMyRents(rented);
+        }
         setLoading(false)
       })
+    console.log(myRents)
   }, []);
 
   const onDetailsTool = async (toolId) => {
@@ -98,7 +107,8 @@ function App() {
 
   const onToolDelete = async (toolId) => {
     try {
-      await toolsService.remove(toolId, auth.accessToken)
+      await toolsService.remove(toolId, auth.accessToken);
+      await rentService.remove(toolId, auth.accessToken);
       setTools(state => state.filter(tool => tool._id !== toolId));
       setMyRents(state => state.filter(tool => tool._id !== toolId));
       console.log(tools);
@@ -193,14 +203,17 @@ function App() {
   };
 
   const onToolRent = async (toolId) => {
-    let myNewRent = await toolsService.getOne(toolId);
-    // myNewRent.rented = auth._id
-    setMyRents(state => [...state, { ...myNewRent, rented: auth._id }]);
+    let toolForRent = await toolsService.getOne(toolId);
+
+    const myNewRent = await rentService.addToMyRents(toolForRent, auth.accessToken);
+
+    setMyRents(state => [...state, ({ ...myNewRent, _ownerId: toolForRent._ownerId, rented: auth._id, author: { email: auth.email } })]);
+   
     setTools(state => state.filter(tool => tool._id !== toolId));
-    // setTools(state => state.filter(x => x._id !== toolId));
-    console.log(myRents)
+
 
   }
+  console.log(myRents)
 
   const contextValues = {
     tools,
